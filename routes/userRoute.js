@@ -1,12 +1,13 @@
 const express=require('express');
-const router=express.Router();
-const userController=require('../controllers/userController');
+const userrouter=express.Router();
+const {registerUser,loginUser,forgotPassword,resetPassword,changePassword,updateProfile,getAllUsers}=require('../controllers/userController');
 
-router.post("/register",userController.registerUser);
-router.post("/login",userController.loginUser);
-router.post("/forgot-password",userController.forgotPassword);
-router.post("/reset-password",userController.resetPassword);
-router.post("/change-password",userController.changePassword);
-router.put("/update-profile",userController.updateProfile);
+userrouter.post("/register",registerUser);
+userrouter.post("/login",loginUser);
+userrouter.post("/forgot-password",forgotPassword);
+userrouter.post("/reset-password",resetPassword);
+userrouter.post("/change-password",changePassword);
+userrouter.put("/update-profile",updateProfile);
+userrouter.get("/users",getAllUsers);
 
-module.exports = router;
+module.exports=userrouter;

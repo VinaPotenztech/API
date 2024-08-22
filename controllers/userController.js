@@ -1,7 +1,9 @@
 const crypto=require("crypto");
 const User=require("../models/user");
+const { get } = require("http");
+const { log } = require("console");
 
-exports.registerUser=async(req,res)=>{
+const registerUser=async(req,res)=>{
     const { firstname, lastname, email, password, country } = req.body;
     if (!firstname || !lastname || !email || !password || !country) {
       return res.status(400).json({ message: "All fields are required" });
@@ -23,7 +25,7 @@ exports.registerUser=async(req,res)=>{
 };
 
 //Login
-exports.loginUser=async(req,res) => {
+const loginUser=async(req,res) => {
     const { email, password } = req.body;
   
     // Basic validation
@@ -53,7 +55,7 @@ exports.loginUser=async(req,res) => {
     }
 };
 
-exports.forgotPassword=async(req,res)=>{
+const forgotPassword=async(req,res)=>{
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
@@ -85,7 +87,7 @@ exports.forgotPassword=async(req,res)=>{
     }
 };
 
-exports.resetPassword=async (req,res)=>{
+const resetPassword=async (req,res)=>{
     const { token, newPassword } = req.body;
   
     if (!token || !newPassword) {
@@ -117,7 +119,7 @@ exports.resetPassword=async (req,res)=>{
     }
 };
 
-exports.changePassword=async(req,res)=>{
+const changePassword=async(req,res)=>{
     const { email, currentPassword, newPassword } = req.body;
   
     if (!email || !currentPassword || !newPassword) {
@@ -148,7 +150,7 @@ exports.changePassword=async(req,res)=>{
     }
 } 
 
-exports.updateProfile=async(req,res)=>{
+const updateProfile=async(req,res)=>{
    const {email,firstname,lastname,country}=req.body;
 
    if(!email || !firstname || !lastname ||  !country){
@@ -171,4 +173,23 @@ exports.updateProfile=async(req,res)=>{
     console.log(error);
     
    }
+}
+
+const getAllUsers=async(req,res)=>{
+ try {
+  const users=await User.find();
+  res.status(200).json(users)
+ } catch (error) {
+    res.status(500).json({message:'Error fetching users',error})
+ } 
+};
+
+module.exports={
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  changePassword,
+  updateProfile,
+  getAllUsers,
 }
