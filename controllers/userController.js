@@ -147,3 +147,28 @@ exports.changePassword=async(req,res)=>{
       console.log(error);
     }
 } 
+
+exports.updateProfile=async(req,res)=>{
+   const {email,firstname,lastname,country}=req.body;
+
+   if(!email || !firstname || !lastname ||  !country){
+    return res.status(400).json({message:"Firstname,Lastname,email, and country are required"});
+   }
+   try {
+    const user=await User.findOneAndUpdate(
+      {email},
+      {firstname,lastname,country},
+      {new:true}
+    );
+
+    if(!user){
+      return res.status(400).json({message:"User not found."});
+    }
+    res.status(200).json({message:"Profile updated successfully",user});
+
+   } catch (error) {
+    res.status(500).json({message:"Error updating profile",error});
+    console.log(error);
+    
+   }
+}
