@@ -1,9 +1,9 @@
 //server.js
 const express = require("express");
-const connectDB = require("./config/db");
+const connectDB = require("../API/src/config/db");
 const bodyParser = require("body-parser");
-const userRoute=require('./routes/userRoute');
-require("./config/dotenv");
+const userRoute=require('../API/src/routes/userRoute');
+require("../API/src/config/dotenv");
 
 const app = express();
 const port = process.env.PORT || 3000;

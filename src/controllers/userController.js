@@ -1,8 +1,8 @@
 const crypto=require("crypto");
 const User=require("../models/user");
-const { get } = require("http");
 const { log } = require("console");
 
+//Register
 const registerUser=async(req,res)=>{
     const { firstname, lastname, email, password, country } = req.body;
     if (!firstname || !lastname || !email || !password || !country) {
@@ -55,6 +55,7 @@ const loginUser=async(req,res) => {
     }
 };
 
+//forgot password
 const forgotPassword=async(req,res)=>{
     const { email } = req.body;
     if (!email) {
@@ -87,6 +88,8 @@ const forgotPassword=async(req,res)=>{
     }
 };
 
+
+//reset password
 const resetPassword=async (req,res)=>{
     const { token, newPassword } = req.body;
   
@@ -119,6 +122,7 @@ const resetPassword=async (req,res)=>{
     }
 };
 
+//change password
 const changePassword=async(req,res)=>{
     const { email, currentPassword, newPassword } = req.body;
   
@@ -150,6 +154,7 @@ const changePassword=async(req,res)=>{
     }
 } 
 
+//update profile
 const updateProfile=async(req,res)=>{
    const {email,firstname,lastname,country}=req.body;
 
@@ -175,6 +180,7 @@ const updateProfile=async(req,res)=>{
    }
 }
 
+//get all users
 const getAllUsers=async(req,res)=>{
  try {
   const users=await User.find();
@@ -184,6 +190,24 @@ const getAllUsers=async(req,res)=>{
  } 
 };
 
+//delete user
+const deleteUser=async (req,res)=>{
+  try {
+    const userId=req.params.id;
+    const result=await User.findByIdAndDelete(userId);
+
+    if(!result){
+      return res.status(404).send('User not found');
+
+    }
+    res.send('User deleted successfully');
+  } catch (error) {
+    res.status(500).send('Server error');
+    console.log(error);
+    
+  }
+}
+//export
 module.exports={
   registerUser,
   loginUser,
@@ -192,4 +216,5 @@ module.exports={
   changePassword,
   updateProfile,
   getAllUsers,
+  deleteUser
 }
